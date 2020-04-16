@@ -17,6 +17,7 @@ if ($result->num_rows > 0) {
             <h4 class="card-title">' . $row["name"] . '</h4>
                         <img class="card-img-top" data-src="holder.js/100x180/?text=Image cap" alt="Card image cap"></a>
                         <p class="card-text">' . $row["about_me"] . '</p>
+
             </div>
             </div>';
     }
@@ -25,8 +26,8 @@ if ($result->num_rows > 0) {
     echo "No heroes";
 }
 
-
+require "abilities.php";
 require "friends.php";
-
+require "enemies.php";
         
 require "footer.php";
