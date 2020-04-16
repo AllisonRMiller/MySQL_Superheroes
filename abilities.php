@@ -12,18 +12,13 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         
         $abilities .=
-        '<div class="row">
-        <div class="col">
-        <h3>Abilities</h3>
-        <ul>
-        <li>' . $row["ability"] . '</li>
-        </ul
-        </div>
-        </div>'
+        '<li>' . $row["ability"] . '</li>'
         ;
     }
     echo $abilities;
 }
 else {echo "No abilities";}
+
+
 
 ?>
