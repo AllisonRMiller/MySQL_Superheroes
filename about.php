@@ -17,8 +17,10 @@ $id = $_GET["id"];
 
                 $profile .=
                     '<h2 class="card-title">' . $row["name"] . '</h2>
-                        <img class="card-img-top" data-src="holder.js/100x180/?text=Image cap" alt="Card image cap"></a>
-                        <p class="card-text">' . $row["about_me"] . '</p>';
+                        <img class="card-img" data-src=' . $row["image_url"] . ' alt="Card image"></a>
+                        <p class="card-text bg-light">' . $row["about_me"] . '</p>
+                        <hr>
+                        <p class="card-text">' . $row["biography"] . '</p>';
             }
             echo $profile;
         } else {
@@ -51,9 +53,9 @@ $id = $_GET["id"];
         </ul>
 
         <!-- Friends and enemies here -->
-        '<div class="row">
+        <div class="row">
             <div class="col">
-                <h3>Friends</h3>
+                <h3>Allies</h3>
                 <ul class="list-group list-group-flush">
                     <?php
                     $sql = "SELECT * FROM relationships
@@ -71,9 +73,11 @@ $id = $_GET["id"];
 
                         echo $friends;
                     } else {
-                        echo "No heroes";
+                        echo '<p>You have no allies....</p>'
+                        ;
                     }
                     ?>
+                    <button type="button" class="btn btn-secondary">Change Allies</button>
             </div>
             <div class="col">
                 <h3>Enemies</h3>
@@ -94,9 +98,10 @@ WHERE (hero1_id=" . $id . ") AND (type_id=2);";
 
                         echo $enemies;
                     } else {
-                        echo "No heroes";
+                        echo '<p>You have no enemies...</p>';
                     }
                     ?>
+                <button type="button" class="btn btn-secondary">Change Enemies</button>
             </div>
         </div>
     </div>
