@@ -5,8 +5,8 @@ $id = $_GET["id"];
 ?>
 
 
-
 <div class="col">
+    <a href="index.php" class="btn btn-primary">Home Page</a>
     <div class="card">
         <?php
         // Get everything from heroes

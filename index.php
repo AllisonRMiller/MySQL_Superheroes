@@ -42,7 +42,7 @@ $id = $_GET["id"];
 <!-- Move this to its own page and place a link that directs to it.   -->
 <div class="row">
     <div class="col">
-
+        <h2>Join Today!</h2>
         <form action="newHero.php" method="post">
             <div class="form-group">
                 <label for="newhero1">Superhero Name</label>
