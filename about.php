@@ -1,32 +1,141 @@
 <?php
 require "heroes.php";
 require "header.php";
-
-
-//Ask about multi-query
 $id = $_GET["id"];
-$sql = "SELECT * FROM heroes WHERE id = " .$id;
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    $profile = "";
-    while ($row = $result->fetch_assoc()) {
-        
-        $profile .=
-            '<div class="col">
-            <div class="card">        
-            <h4 class="card-title">' . $row["name"] . '</h4>
-                        <img class="card-img-top" data-src="holder.js/100x180/?text=Image cap" alt="Card image cap"></a>
-                        <p class="card-text">' . $row["about_me"] . '</p>
+?>
+
+
+<div class="col">
+    <a href="index.php" class="btn btn-primary">Home Page</a>
+    <div class="card">
+        <?php
+        // Get everything from heroes
+        $sql = "SELECT * FROM heroes WHERE id = " . $id;
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $profile = "";
+            while ($row = $result->fetch_assoc()) {
+                // prep display of everything from heroes
+                $profile .=
+                    '<h2 class="card-title">' . $row["name"] . '</h2>
+                        <img class="card-img" data-src=' . $row["image_url"] . ' alt="Card image"></a>
+                        <p class="card-text bg-light">' . $row["about_me"] . '</p>
+                        <hr>
+                        <p class="card-text">' . $row["biography"] . '</p>';
+            }
+            // display everything from heroes
+            echo $profile;
+        } else {
+            // if there's no data
+            echo "No heroes";
+        }
+        ?>
+        <form action=<?php echo '"updateBio.php?id=' . $id . '"' ?> method="post">
+            <div class="form-group">
+                <label for="updateBio">Update Bio</label>
+                <textarea class="form-control" name="biography" id="biography" rows="3" placeholder="Tell us all about your origin story here"></textarea>
             </div>
-            </div>';
-    }
-    echo $profile;
-} else {
-    echo "No heroes";
-}
+            <button type="Submit" class="btn btn-secondary">Update Bio</button>
+        </form>
+        <h3>Abilities</h3>
+        <ul class="list-group list-group-flush">
+            <?php
+            $sql = "SELECT *
+                FROM ((abilities
+                INNER JOIN ability_hero ON ability_hero.ability_id = abilities.id)
+                INNER JOIN heroes ON heroes.id = ability_hero.hero_id)
+                WHERE heroes.id=" . $id;
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                $abilities = "";
+                while ($row = $result->fetch_assoc()) {
+
+                    $abilities .=
+                        '<li class="list-group-item">' . $row["ability"] . '</li>';
+                }
+                echo $abilities;
+            } else {
+                echo "No abilities";
+            }
 
 
-require "friends.php";
+            ?>
+        </ul>
+        <form action=<?php echo '"changePowers.php?id=' . $id . '"' ?> method="post">
+        <div class="form-group">
+            <label for="newhero2">Add Powers</label>
+            <select multiple="multiple" class="form-control" name="abilities[]" id="abilities">
+                <?php
+                $sql = "SELECT * FROM abilities";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<option value="' . $row["id"] . '">' . $row["ability"] . '</option>';
+                    }
+                }
+                ?>
 
-        
-require "footer.php";
+            </select>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+        <!-- Friends and enemies here -->
+        <div class="row">
+            <div class="col">
+                <h3>Allies</h3>
+                <ul class="list-group list-group-flush">
+                    <?php
+                    $sql = "SELECT * FROM relationships
+                            INNER JOIN heroes
+                            on relationships.hero2_id=heroes.id
+                            WHERE (hero1_id=" . $id . ") AND (type_id=1);";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        $friends = "";
+                        while ($row = $result->fetch_assoc()) {
+                            $friend = "about.php?id=" . $row["hero2_id"];
+                            $friends .=
+                                '<li class="list-group-item"> <a href=' . $friend . '>' . $row["name"] . '</a></li>';
+                        }
+
+                        echo $friends;
+                    } else {
+                        echo '<p>You have no allies....</p>';
+                    }
+                    ?>
+                    <!-- <button type="button" action="changeFriend.php" method="post" class="btn btn-secondary">Change Allies</button> -->
+            </div>
+            <div class="col">
+                <h3>Enemies</h3>
+                <ul class="list-group list-group-flush">
+                    <?php
+                    $sql = "SELECT * FROM relationships
+INNER JOIN heroes
+on relationships.hero2_id=heroes.id
+WHERE (hero1_id=" . $id . ") AND (type_id=2);";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        $enemies = "";
+                        while ($row = $result->fetch_assoc()) {
+                            $enemy = "about.php?id=" . $row["hero2_id"];
+                            $enemies .=
+                                '<li class="list-group-item"> <a href=' . $enemy . '>' . $row["name"] . '</a></li>';
+                        }
+
+                        echo $enemies;
+                    } else {
+                        echo '<p>You have no enemies...</p>';
+                    }
+                    ?>
+                    <!-- <button type="button" class="btn btn-secondary">Change Enemies</button> -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <?php
+    require "footer.php";
+    ?>
