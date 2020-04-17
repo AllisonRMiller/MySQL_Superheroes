@@ -1,3 +1,10 @@
+<!-- TODO:
+ * Move submit new hero to its own page and place a link on the main page
+ * Collect all the disparate functions into a data.php instead of just running them on separate pages
+ * Clean up pages no longer in use
+ * Add images
+ * Set up image upload  -->
+
 <?php
 require "heroes.php";
 require "header.php";
@@ -31,6 +38,8 @@ $id = $_GET["id"];
     </ul>
 </div>
 </div>
+
+<!-- Move this to its own page and place a link that directs to it.   -->
 <div class="row">
     <div class="col">
 
@@ -39,9 +48,6 @@ $id = $_GET["id"];
                 <label for="newhero1">Superhero Name</label>
                 <input type="text" class="form-control" name="heroname" id="heroname" placeholder="">
             </div>
-            <!--T* Look at name="abilities[]"--this is telling the query it is receiving an array.  
-            Note the value entry inside the echo as well, returning the ID of the ability in a retrievable format. 
-            Now go look at newHero.php -->
             <div class="form-group">
                 <label for="newhero2">Powers</label>
                 <select multiple="multiple" class="form-control" name="abilities[]" id="abilities">
@@ -65,10 +71,10 @@ $id = $_GET["id"];
                 <label for="newhero4">Bio</label>
                 <textarea class="form-control" name="biography" id="biography" rows="3" placeholder="Tell us all about your origin story here"></textarea>
             </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="newhero5">Avatar</label>
                     <input type="file" class="form-control-file" name="newimage" id="newimage">
-                </div>
+                </div> -->
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
