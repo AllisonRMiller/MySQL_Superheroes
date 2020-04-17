@@ -14,6 +14,7 @@ $id = $_GET["id"];
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $profile = "";
+            // Does this need to be a while?  We are only retrieving one record.
             while ($row = $result->fetch_assoc()) {
                 // prep display of everything from heroes
                 $profile .=
@@ -30,13 +31,15 @@ $id = $_GET["id"];
             echo "No heroes";
         }
         ?>
+        <!-- Form to update bio--put this behind an accordion? -->
         <form action=<?php echo '"updateBio.php?id=' . $id . '"' ?> method="post">
             <div class="form-group">
                 <label for="updateBio">Update Bio</label>
                 <textarea class="form-control" name="biography" id="biography" rows="3" placeholder="Tell us all about your origin story here"></textarea>
             </div>
-            <button type="Submit" class="btn btn-secondary">Update Bio</button>
+            <button type="Submit" class="btn btn-secondary">Update</button>
         </form>
+        <!-- Display abilities, same format as displaying hero info -->
         <h3>Abilities</h3>
         <ul class="list-group list-group-flush">
             <?php
@@ -61,25 +64,24 @@ $id = $_GET["id"];
 
             ?>
         </ul>
+        <!-- Form that allows user to update abilities. This accepts both add and delete input -->
         <form action=<?php echo '"changePowers.php?id=' . $id . '"' ?> method="post">
-        <div class="form-group">
-            <label for="newhero2">Add Powers</label>
-            <select multiple="multiple" class="form-control" name="abilities[]" id="abilities">
-                <?php
-                $sql = "SELECT * FROM abilities";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<option value="' . $row["id"] . '">' . $row["ability"] . '</option>';
+            <div class="form-group">
+                <label for="newhero2">Update Powers</label>
+                <select multiple="multiple" class="form-control" name="abilities[]" id="abilities">
+                    <?php
+                    $sql = "SELECT * FROM abilities";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<option value="' . $row["id"] . '">' . $row["ability"] . '</option>';
+                        }
                     }
-                }
-                ?>
-
-            </select>
-
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+                    ?>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
 
         <!-- Friends and enemies here -->
         <div class="row">
@@ -112,9 +114,9 @@ $id = $_GET["id"];
                 <ul class="list-group list-group-flush">
                     <?php
                     $sql = "SELECT * FROM relationships
-INNER JOIN heroes
-on relationships.hero2_id=heroes.id
-WHERE (hero1_id=" . $id . ") AND (type_id=2);";
+                            INNER JOIN heroes
+                            on relationships.hero2_id=heroes.id
+                            WHERE (hero1_id=" . $id . ") AND (type_id=2);";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         $enemies = "";
