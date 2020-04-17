@@ -1,8 +1,10 @@
 <?php
 require "heroes.php";
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 $newName = $_POST["heroname"]; 
 $newBio = $_POST["biography"];
 $newAbout = $_POST["aboutme"];
@@ -28,6 +30,3 @@ if ($result === TRUE) {
 $conn->close();
 
 header("Location: /about.php?id=" . $heroID);
-
-
-?>

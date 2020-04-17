@@ -1,10 +1,8 @@
-
-
 <?php
 require "heroes.php";
 require "header.php";
 
-$id = $_GET["id"];
+// $id = $_GET["id"];
 
 ?>
 
