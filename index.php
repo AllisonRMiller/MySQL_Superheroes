@@ -1,9 +1,4 @@
-<!-- TODO:
- * Move submit new hero to its own page and place a link on the main page
- * Collect all the disparate functions into a data.php instead of just running them on separate pages
- * Clean up pages no longer in use
- * Add images
- * Set up image upload  -->
+
 
 <?php
 require "heroes.php";
